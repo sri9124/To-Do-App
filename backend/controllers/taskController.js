@@ -1,8 +1,5 @@
 const Task = require('../models/Task');
 
-// @route   GET api/todos
-// @desc    Get all user's tasks
-// @access  Private
 exports.getTasks = async (req, res) => {
   try {
     const tasks = await Task.find({ user: req.user.id }).sort({ createdAt: -1 });
@@ -13,9 +10,6 @@ exports.getTasks = async (req, res) => {
   }
 };
 
-// @route   POST api/todos
-// @desc    Add a new task
-// @access  Private
 exports.createTask = async (req, res) => {
   const { text, description, date, time, timeAmPm } = req.body;
 
@@ -37,9 +31,6 @@ exports.createTask = async (req, res) => {
   }
 };
 
-// @route   PATCH api/todos/:id
-// @desc    Update a task
-// @access  Private
 exports.updateTask = async (req, res) => {
   try {
     let task = await Task.findById(req.params.id);
@@ -48,7 +39,6 @@ exports.updateTask = async (req, res) => {
       return res.status(404).json({ msg: 'Task not found' });
     }
 
-    // Make sure user owns task
     if (task.user.toString() !== req.user.id) {
       return res.status(401).json({ msg: 'Not authorized' });
     }
@@ -62,9 +52,6 @@ exports.updateTask = async (req, res) => {
   }
 };
 
-// @route   DELETE api/todos/:id
-// @desc    Delete a task
-// @access  Private
 exports.deleteTask = async (req, res) => {
     try {
       let task = await Task.findById(req.params.id);
@@ -73,12 +60,10 @@ exports.deleteTask = async (req, res) => {
         return res.status(404).json({ msg: 'Task not found' });
       }
   
-      // Make sure user owns task
       if (task.user.toString() !== req.user.id) {
         return res.status(401).json({ msg: 'Not authorized' });
       }
-  
-      // THE FIX IS HERE
+
       await Task.findByIdAndDelete(req.params.id);
   
       res.json({ msg: 'Task removed' });

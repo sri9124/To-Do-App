@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
-// Ensure your .env file in your React project has this variable
 const API = import.meta.env.VITE_BACK_URI;
 
 function LoginPage() {
@@ -20,37 +19,33 @@ function LoginPage() {
     console.log('ATTEMPTING TO LOG IN WITH:', { email, password });
 
     try {
-      // The endpoint should match your server route setup
+
       const res = await axios.post(`${API}/api/auth/login`, {
         email,
         password,
       });
 
-      // Store token and user data in localStorage
       localStorage.setItem('token', res.data.token);
-      localStorage.setItem('user', JSON.stringify(res.data.user)); // Store the user object
+      localStorage.setItem('user', JSON.stringify(res.data.user)); 
 
-      // Navigate to the user's tasks page on successful login
       navigate('/tasks');
 
     }  catch (err) {
-      // Log the entire error object to the console for detailed debugging
       console.error("Login error details:", err);
     
       let errorMessage = 'An unknown error occurred.';
     
-      // Case 1: The server responded with an error (e.g., 4xx or 5xx status code)
-      if (err.response) {
-        // Look for a message in common properties, otherwise use the status text
+     
+      if (err.response) {        
         errorMessage = err.response.data?.msg || err.response.data?.message || err.response.data?.error || err.response.statusText;
         console.error("Server responded with an error:", err.response.status, err.response.data);
       } 
-      // Case 2: The request was made but no response was received (e.g., network error)
+      
       else if (err.request) {
         errorMessage = 'Could not connect to the server. Please check your network connection.';
         console.error("No response received:", err.request);
       } 
-      // Case 3: Something else happened in setting up the request
+
       else {
         errorMessage = err.message;
         console.error("Error setting up the request:", err.message);
@@ -68,7 +63,7 @@ function LoginPage() {
         <h1 className='text-center text-2xl font-bold mb-6'>LOGIN PAGE</h1>
         <form onSubmit={handleLogin} className='flex flex-col items-center'>
           <input
-            type="email" // Use type="email" for better validation
+            type="email" 
             placeholder='EMAIL'
             value={email}
             onChange={(e) => setEmail(e.target.value)}

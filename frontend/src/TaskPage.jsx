@@ -158,7 +158,6 @@ function TaskPage() {
           >Logout</button>
         </div>
 
-        {/* Add Task Form */}
         <form onSubmit={addTodo} className="space-y-3 mb-6">
           <input className="w-full outline-none px-3 py-2 border rounded" type="text" value={newTodo} onChange={(e) => setNewTodo(e.target.value)} placeholder="Task title" required />
           <input className="w-full outline-none px-3 py-2 border rounded" type="text" value={newDescription} onChange={(e) => setNewDescription(e.target.value)} placeholder="Task description" />
@@ -192,7 +191,6 @@ function TaskPage() {
           > Add Task</button>
         </form>
 
-        {/* Todo List */}
         <div className="todo-list max-h-80 overflow-y-auto pr-2">
           {todos.length === 0 ? (
             <p className="text-gray-500 text-center">No tasks yet. Add one above!</p>
